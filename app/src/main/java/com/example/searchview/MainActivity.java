@@ -22,16 +22,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
 
-        // searchView 설정
         activityMainBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(activityMainBinding.getRoot());
 
-        // 리스너 설정
-        ButtonClickListener1 buttonClickListener1 = new ButtonClickListener1();
-        activityMainBinding.button.setOnClickListener(buttonClickListener1);
-
-        SearchViewTextQueryListener1 searchViewTextQueryListener1 =  new SearchViewTextQueryListener1();
-        activityMainBinding.searchView.setOnQueryTextListener(searchViewTextQueryListener1);
+        FloactingClickListener floactingClickListener = new FloactingClickListener();
+        activityMainBinding.floatingActionButton.setOnClickListener(floactingClickListener);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -40,31 +35,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    class ButtonClickListener1 implements View.OnClickListener {
+    // 버튼 눌렀을때
+    class FloactingClickListener implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
-            // 사용자가 입력한 검색어를 가져온다.
-            String str1 = activityMainBinding.searchView.getQuery().toString();
-            activityMainBinding.textView.setText(str1);
-        }
-    }
-
-    // 검색어 입력 또는 엔터 버튼
-    class SearchViewTextQueryListener1 implements SearchView.OnQueryTextListener {
-
-        // 엔터 버튼 눌렀을때
-        @Override
-        public boolean onQueryTextSubmit(String query) {
-            activityMainBinding.textView.setText(query);
-            return false; // true 일때는 키보드가 유지
-        }
-
-        // 검색어 입력시
-        @Override
-        public boolean onQueryTextChange(String newText) {
-            activityMainBinding.textView2.setText(newText);
-            return false;
+            activityMainBinding.textView3.setText("FloatingActionButton Click");
         }
     }
 }
