@@ -13,26 +13,27 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
-    //view의 주소 값 담을 변수
-    Button button;
-    TextView textView;
+    static final String INPUT_FRAGMENT = "input";
+    static final String RESULT_FRAGMENT = "result";
+
+    String edit1Value;
+    String edit2Value;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //view의 주소값을 가져옴
-        button = (Button) findViewById(R.id.button);
-        textView = (TextView) findViewById(R.id.textView);
 
-        ButtonClickListener buttonClickListener = new ButtonClickListener();
-        button.setOnClickListener(buttonClickListener);
+        // 첫 화면으로 input 보여줌
+        setFragment(INPUT_FRAGMENT, false);
 
         EdgeToEdge.enable(this);
 
@@ -43,11 +44,27 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    class ButtonClickListener implements View.OnClickListener {
+    //fragment를 전환하는 메서드
+    public void setFragment(String name, boolean add) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        @Override
-        public void onClick(View v) {
-            textView.setText("버튼을 눌렀습니다.");
+        // 이름 기준으로 분기
+        switch (name) {
+            case INPUT_FRAGMENT:
+                InputFragment inputFragment = InputFragment.newInstance();
+                fragmentTransaction.replace(R.id.fragmentContainerView, inputFragment);
+                break;
+            case RESULT_FRAGMENT:
+                ResultFragment resultFragment = ResultFragment.newInstance();
+                fragmentTransaction.replace(R.id.fragmentContainerView, resultFragment);
+                break;
         }
+
+        if (add) {
+            fragmentTransaction.addToBackStack(null);
+        }
+
+        fragmentTransaction.commit();
     }
 }
